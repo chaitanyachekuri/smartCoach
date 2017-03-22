@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const personalDetailsSchema = new Schema({
+const adminPersonalDetailsSchema = new Schema({
     guId: String,
     controlId: String,
     email: String,
@@ -12,6 +12,6 @@ const personalDetailsSchema = new Schema({
     phoneNumber: String,
 });
 
-const personalDetails = mongoose.model('personalDetails', personalDetailsSchema);
+const adminPersonalDetails = mongoose.model('adminPersonalDetails', adminPersonalDetailsSchema);
 
-module.exports = personalDetails;
+module.exports = adminPersonalDetails;

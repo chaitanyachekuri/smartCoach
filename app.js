@@ -26,13 +26,12 @@ conn.on('error', (error)=>{
 
 conn.once('open', ()=>{
    console.log("working");
-});
 
 
 const app = express();
 
 
-
+const appController = require('./routes/admin/admin');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -41,9 +40,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', admin);
-app.use('/users', users);
-app.use('/', first);
+appController(app);
+
 
 
 const listen = ()=>{
@@ -51,3 +49,4 @@ const listen = ()=>{
 };
 
 app.listen(port, listen());
+});
