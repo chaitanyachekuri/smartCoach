@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const admin = require('./routes/admin');
+const admin = require('./routes/admin/admin');
 const users = require('./routes/users');
 const first = require('./routes/first');
 
@@ -48,6 +48,6 @@ app.use('/', first);
 
 const listen = ()=>{
     console.log("Listening at " + port);
-}
+};
 
 app.listen(port, listen());
