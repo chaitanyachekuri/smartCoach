@@ -26,7 +26,32 @@ conn.on('error', (error)=>{
 
 conn.once('open', ()=>{
    console.log("working");
+//should go to email helper
+    const mailer = require("nodemailer");
 
+// Use Smtp Protocol to send Email
+    let transporter = mailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'cskcvarma13@gmail.com',
+            pass: 'SwethaRaju12'
+        }
+    });
+
+    let mail = {
+        from: "csk < cskcvarma13@gmail.com >",
+        to: "cskcvarma13@gmail.com",
+        subject: "Send Email Using Node.js",
+        text: "Node.js New world for me",
+        html: "<b>Node.js New world for me</b>"
+    }
+
+    transporter.sendMail(mail, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message %s sent: %s', info.messageId, info.response);
+    });
 
 const app = express();
 
