@@ -6,12 +6,12 @@ app.config(function($routeProvider){
         templateUrl: 'views/start.html',
         controller: 'startController'})
 
-        .when('/admin', {
-        templateUrl: 'views/admin/adminHome.html',
+        .when('/teacher', {
+        templateUrl: 'views/teacher/adminHome.html',
         controller: 'adminHomeController'
         })
 
-        .when('/admin/signup', {
+        .when('/signup', {
            templateUrl: 'views/signUp/signUp.html',
             controller: 'signUpController'
         });

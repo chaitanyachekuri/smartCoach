@@ -31,7 +31,7 @@ conn.once('open', ()=>{
 const app = express();
 
 
-const appController = require('./routes/admin/admin');
+const appController = require('./routes/sign/signUp');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));

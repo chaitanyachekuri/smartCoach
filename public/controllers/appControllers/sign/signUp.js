@@ -4,17 +4,22 @@
 
 app.controller("signUpController", ['$scope', '$http', function ($scope, $http) {
 
-    $scope.adminPersonalDetails = {
+    $scope.personalDetails = {
         email: "",
         password: "",
         userName: "",
         firstName: "",
-        lastName: "cs",
-        phone: ""
+        lastName: "",
+        phone: "",
+        type: ""
     };
 
-    $scope.adminSubmit = ()=>{
-        $http.post('api/admin/signup', {adminPersonalDetails: $scope.adminPersonalDetails})
+
+    $scope.onSubmit = ()=>{
+
+        console.log( $scope.personalDetails);
+
+        $http.post('api/signup', {personalDetails: $scope.personalDetails})
             .success((results)=>{
               console.log("success");
             })
