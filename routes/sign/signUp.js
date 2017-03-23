@@ -5,7 +5,6 @@ const studentPersonalDetails = require('../../models/student/personalDetails.mod
 
 
 const express = require('express');
-const router = express.Router();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -34,7 +33,7 @@ module.exports = function(app){
         return c;
 
     }
-
+// till here
     app.post('/api/signup', (req, res)=>{
 
         console.log(req.body);
