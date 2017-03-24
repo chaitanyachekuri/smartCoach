@@ -5,7 +5,7 @@ const studentPersonalDetails = require('../../models/student/personalDetails.mod
 
 const idGenHelper = require('../../helper/idGen');
 const emailHelper = require('../../helper/email');
-
+const emailCheck = require('../../helper/emailCheck');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -18,8 +18,8 @@ module.exports = function(app){
 // till here
     app.post('/api/signup', (req, res)=>{
         let mailOptions;
-        console.log(req.body);
         if(req.body.personalDetails.type == 'Teacher') {
+            emailCheck.checkEmail(req.body);
             console.log(req.body);
             let newteacherPersonalDetails = teacherPersonalDetails({
                 guId: idGenHelper.generateUUID(),
@@ -52,13 +52,12 @@ module.exports = function(app){
 
         }
         else if(req.body.personalDetails.type == 'Student'){
-            console.log(req.body.personalDetails.type);
             let newstudentPersonalDetails = studentPersonalDetails({
                 guId: idGenHelper.generateUUID(),
                 controlId: idGenHelper.generateCID("S"),
-                email: req.body.personalDetails.email,
+                email: req.body.personalDetails.email.toLowerCase(),
                 password: req.body.personalDetails.password,
-                userName: req.body.personalDetails.userName,
+                userName: req.body.personalDetails.userName.toLowerCase(),
                 firstName: req.body.personalDetails.firstName,
                 lastName: req.body.personalDetails.lastName,
                 phoneNumber: req.body.personalDetails.phone,
