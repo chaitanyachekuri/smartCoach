@@ -3,6 +3,9 @@
 const teacherPersonalDetails = require('../../models/teacher/personalDetails.model');
 const studentPersonalDetails = require('../../models/student/personalDetails.model');
 
+const idGenHelper = require('../../helper/idGen');
+const emailHelper = require('../../helper/email');
+
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,36 +15,15 @@ module.exports = function(app){
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: true}));
 
-    //should go to helpers
-    let generateUUID = function(){
-        let d = new Date().getTime();
-
-        let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            let r = (d + Math.random()*16)%16 | 0;
-            d = Math.floor(d/16);
-            return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-        });
-        return uuid;
-
-    };
-
-    let generateCID = function (a) {
-        let f = Math.floor(Math.random()*89999+10000);
-        let c = f.toString();
-        c = a+c;
-
-        return c;
-
-    }
 // till here
     app.post('/api/signup', (req, res)=>{
-
+        let mailOptions;
         console.log(req.body);
         if(req.body.personalDetails.type == 'Teacher') {
             console.log(req.body);
             let newteacherPersonalDetails = teacherPersonalDetails({
-                guId: generateUUID(),
-                controlId: generateCID("T"),
+                guId: idGenHelper.generateUUID(),
+                controlId: idGenHelper.generateCID("T"),
                 email: req.body.personalDetails.email,
                 password: req.body.personalDetails.password,
                 userName: req.body.personalDetails.userName,
@@ -57,12 +39,23 @@ module.exports = function(app){
                     console.log("success");
                 }
             });
+
+
+            mailOptions = {
+                from: "csk < smartcoach17@gmail.com >",
+                to: newteacherPersonalDetails.email,
+                subject: "Verify your email to access your smart coach",
+                text: "Email Verification",
+                html: "Hi " + newteacherPersonalDetails.firstName + " "+ newteacherPersonalDetails.lastName +",<br/>Please type the following in code in the verification box provided to access the website <br/><br/><b>Code: " + newteacherPersonalDetails.controlId+"</b><br/><br/>Thank You,<br/>SmartCoach."
+            }
+
+
         }
         else if(req.body.personalDetails.type == 'Student'){
             console.log(req.body.personalDetails.type);
             let newstudentPersonalDetails = studentPersonalDetails({
-                guId: generateUUID(),
-                controlId: generateCID("S"),
+                guId: idGenHelper.generateUUID(),
+                controlId: idGenHelper.generateCID("S"),
                 email: req.body.personalDetails.email,
                 password: req.body.personalDetails.password,
                 userName: req.body.personalDetails.userName,
@@ -72,6 +65,14 @@ module.exports = function(app){
                 type: req.body.personalDetails.type
             });
 
+            mailOptions = {
+                from: "csk < smartcoach17@gmail.com >",
+                to: newstudentPersonalDetails.email,
+                subject: "Verify your email to access your smart coach",
+                text: "Email Verification",
+                html: "Hi " + newstudentPersonalDetails.firstName + " "+ newstudentPersonalDetails.lastName +",<br/>Please type the following in code in the verification box provided to access the website <br/><br/><b>Code: " + newstudentPersonalDetails.controlId+"</b><br/><br/>Thank You,<br/>SmartCoach."
+            }
+
             newstudentPersonalDetails.save(function (err) {
                 if (err) throw err;
                 else {
@@ -79,6 +80,8 @@ module.exports = function(app){
                 }
             });
         }
+
+        emailHelper(mailOptions);
 
     });
 };
